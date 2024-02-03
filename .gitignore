@@ -15,5 +15,4 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
-/.idea/compiler.xml
-/.idea/karate-deckofcards.iml
+/.idea/
