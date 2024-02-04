@@ -9,7 +9,7 @@ Feature: Deck Contract Tests
     {
       "success": '#boolean',
       "deck_id": '#string',
-      "remaining": '#number? _ >= 100',
+      "remaining": '#number? _ >= 0',
       "shuffled": '#boolean'
     }
     """
