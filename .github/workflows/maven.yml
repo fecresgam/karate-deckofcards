@@ -19,3 +19,9 @@ jobs:
 
       - name: Test with Maven
         run: mvn clean test
+
+      - name: Upload Karate Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: karate-test-results
+          path: target/karate-reports/
