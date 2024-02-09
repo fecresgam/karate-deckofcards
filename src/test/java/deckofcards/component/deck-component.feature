@@ -5,7 +5,6 @@ Feature: Deck Component Tests
   Background:
     * url apiUrl
 
-  # Check non-shuffled deck with Jokers Card By Card
   Scenario: [Happy Path] Get non-shuffled deck with Jokers Card By Card
     Given path 'deck', 'new'
     And param jokers_enabled = true
@@ -127,4 +126,66 @@ Feature: Deck Component Tests
     # Joker 2 is the Last Card
     * def result = call read('classpath:deckofcards/get-a-card.feature')
     * match result.response.cards[0].code == 'X2'
+    * match result.response.remaining == 0
+
+  Scenario: [Happy Path] Get non-shuffled partial deck Card By Card
+    Given path 'deck', 'new'
+    And param cards = 'AS,2S,KS,AD,2D,KD,AC,2C,KC,AH,2H,KH'
+    When method get
+    Then status 200
+    And match response.success == true
+    * def deckId = response.deck_id
+    # Spades
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'AS'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == '2S'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'KS'
+    # Diamonds
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'AD'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == '2D'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'KD'
+    # Clubs
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'AC'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == '2C'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'KC'
+    # Hearts
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'AH'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == '2H'
+    # King of Hearts is the Last Card
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'KH'
+    * match result.response.remaining == 0
+
+  Scenario: [Happy Path] Get non-shuffled partial deck with repeated cards Card By Card
+    Given path 'deck', 'new'
+    And param cards = 'AS,AS,AS,KD,KD,KH'
+    When method get
+    Then status 200
+    And match response.success == true
+    * def deckId = response.deck_id
+    # Spades
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'AS'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'AS'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'AS'
+    # Diamonds
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'KD'
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'KD'
+    # King of Hearts is the Last Card
+    * def result = call read('classpath:deckofcards/get-a-card.feature')
+    * match result.response.cards[0].code == 'KH'
     * match result.response.remaining == 0

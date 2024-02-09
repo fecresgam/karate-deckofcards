@@ -9,6 +9,9 @@
 
 ## Instructions to run test with maven
 - Run All Karate tests: `mvn clean test`
+- Run by category
+  - Contract tests: `mvn clean test -Dkarate.options="--tags @contract"`
+  - Component tests: `mvn clean test -Dkarate.options="--tags @component"`
 
 ## Check Runs Results
 Take a look on last runs on [GitHub Actions](https://github.com/fecresgam/karate-deckofcards/actions)
