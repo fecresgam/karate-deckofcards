@@ -112,3 +112,48 @@ Feature: Deck Contract Tests
     And match response.success == true
     And match response == drawSchema
     And match each response.cards == cardSchema
+
+  Scenario: [Happy Path] GET /deck/{{deckId}}/pile/{{pileId}}/add
+    Given path 'deck', 'new', 'shuffle'
+    When method get
+    Then status 200
+    And match response.success == true
+    And def deckId = response.deck_id
+    Given def result = call read('classpath:deckofcards/get-a-card.feature')
+    Then def firstCard = result.response.cards[0].code
+    Given path 'deck', deckId, 'pile', 'firstPile', 'add'
+    And param cards = firstCard
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.piles.firstPile.remaining == 1
+
+  Scenario: [Happy Path] GET /deck/{{deckId}}/pile/{{pileId}}/list
+    * def pileId = 'firstPile'
+    Given path 'deck', 'new', 'shuffle'
+    When method get
+    Then status 200
+    And match response.success == true
+    And def deckId = response.deck_id
+    Given def result = call read('classpath:deckofcards/get-a-card.feature')
+    Then def firstCard = result.response.cards[0].code
+    Then def cardToAdd = firstCard
+    Given def result = call read('classpath:deckofcards/add-a-card-to-a-pile.feature')
+    And match result.response.piles.firstPile.remaining == 1
+    Given def result = call read('classpath:deckofcards/get-a-card.feature')
+    Then def secondCard = result.response.cards[0].code
+    Then def cardToAdd = secondCard
+    Given def result = call read('classpath:deckofcards/add-a-card-to-a-pile.feature')
+    And match result.response.piles.firstPile.remaining == 2
+    Given def result = call read('classpath:deckofcards/get-a-card.feature')
+    Then def thirdCard = result.response.cards[0].code
+    Then def cardToAdd = thirdCard
+    Given def result = call read('classpath:deckofcards/add-a-card-to-a-pile.feature')
+    And match result.response.piles.firstPile.remaining == 3
+    Given path 'deck', deckId, 'pile', pileId, 'list'
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.piles.firstPile.cards[0].code == firstCard
+    And match response.piles.firstPile.cards[1].code == secondCard
+    And match response.piles.firstPile.cards[2].code == thirdCard
