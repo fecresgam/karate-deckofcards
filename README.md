@@ -12,6 +12,11 @@
 - Run by category
   - Contract tests: `mvn clean test -Dkarate.options="--tags @contract"`
   - Component tests: `mvn clean test -Dkarate.options="--tags @component"`
+- Filtering by bug
+  - All non-fixed issues: `mvn clean test -Dkarate.options="--tags @openissue"`
+  - All but non-fixed issues: `mvn clean test -Dkarate.options="--tags ~@openissue"`
+  - Issue number X: `mvn clean test -Dkarate.options="--tags @issueX"`
+
 
 ## Check Runs Results
 Take a look on last runs on [GitHub Actions](https://github.com/fecresgam/karate-deckofcards/actions)
