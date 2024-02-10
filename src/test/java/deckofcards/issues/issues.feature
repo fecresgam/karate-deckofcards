@@ -69,3 +69,164 @@ Feature:Issues
     #Expected result is that all 4 drawn cards are listed and remaining number of cards in pile is 9
     #Actual result is that last value passed(8S) is not listed and remaining number of cards in pile is 10
     And match response.piles.spades_pile.remaining == 9
+
+  @issue119
+  # https://github.com/crobertsbmw/deckofcards/issues/119
+  Scenario: Issue 119 - Sometimes card shuffle doesnt work
+    # I'm fetching deck with fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
+    * def firstFiveCards = 'AS2S3S4S5S'
+    Given path 'deck', 'new', 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And def deckId = response.deck_id
+    # Drawing some cards with fetch('https://deckofcardsapi.com/api/deck/${deck?.deck_id}/draw/?count=${count}')
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # After game shuffling them with fetch('https://deckofcardsapi.com/api/deck/${deck?.deck_id}/shuffle/?deck_count=1');
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    # And sometimes it gives me back deck when cards are in order from ace of spades, 2 of spades, 3 of spades ... etc.
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #2
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #3
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #4
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #5
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #6
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #7
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #8
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #9
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
+    # Attempt #10
+    Given path 'deck', deckId, 'shuffle'
+    And param deck_count = 1
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    Given path 'deck', deckId, 'draw'
+    And param count = 5
+    When method get
+    Then status 200
+    And match response.success == true
+    And match response.deck_id == deckId
+    And match firstFiveCards != response.cards[0].code + response.cards[1].code + response.cards[2].code + response.cards[3].code + response.cards[4].code
