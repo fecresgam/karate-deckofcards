@@ -6,13 +6,6 @@ jobs:
   build-and-scan:
     runs-on: ubuntu-latest
 
-    services:
-      zap:
-        image: owasp/zap2docker-stable
-        options: zap-x.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true
-        ports:
-          - 8080:8080
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,8 +15,9 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Wait for ZAP Proxy to initialize
+      - name: Start ZAP Proxy
         run: |
+          docker run -u zap -d --name zap -p 8080:8080 owasp/zap2docker-stable zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true
           echo "Waiting for ZAP Proxy to start..."
           until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
               printf '.'
