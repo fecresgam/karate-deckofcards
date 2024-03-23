@@ -1,21 +1,51 @@
-name: Maven Build and Test
+name: Maven Build with ZAP Proxy
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-and-scan:
     runs-on: ubuntu-latest
+
+    services:
+      zap:
+        image: owasp/zap2docker-stable
+        options: zap-x.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true
+        ports:
+          - 8080:8080
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Wait for ZAP Proxy to initialize
+        run: |
+          echo "Waiting for ZAP Proxy to start..."
+          until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
+              printf '.'
+              sleep 5
+          done
+          echo "ZAP Proxy started."
+
       - name: Test with Maven
-        run: mvn clean test
+        run: |
+          # Configure Maven to use ZAP as a proxy
+          export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
+          mvn clean test
+
+      - name: Generate ZAP Report
+        run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
+
+      - name: Upload ZAP Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap_report.html
 
       - name: Upload Karate Test Results
         if: always()
