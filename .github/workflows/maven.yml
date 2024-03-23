@@ -25,10 +25,17 @@ jobs:
           done
           echo "ZAP Proxy started."
 
+      - name: Get ZAP Root CA Certificate and into Java Keystore
+        run: |
+          # Download ZAP CA Certificate
+          curl -s http://localhost:8080/OTHER/core/other/rootcert/ > zaproxy.cer
+          sudo keytool -importcert -file zaproxy.cer -keystore "${JAVA_HOME}/lib/security/cacerts" -alias zaproxy -storepass changeit -noprompt
+
       - name: Test with Maven
         run: |
           # Configure Maven to use ZAP as a proxy
-          mvn -Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080 -Dhttp.nonProxyHosts='*.maven.org|localhost|127.0.0.1' clean test
+          export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
+          mvn clean test
 
       - name: Generate ZAP Report
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
