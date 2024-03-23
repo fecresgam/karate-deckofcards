@@ -28,8 +28,7 @@ jobs:
       - name: Test with Maven
         run: |
           # Configure Maven to use ZAP as a proxy
-          export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080 -Dhttp.nonProxyHosts='*.maven.org|localhost|127.0.0.1'"
-          mvn clean test
+          mvn -Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080 -Dhttp.nonProxyHosts='*.maven.org|localhost|127.0.0.1' clean test
 
       - name: Generate ZAP Report
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
