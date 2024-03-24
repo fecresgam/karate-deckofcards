@@ -35,11 +35,15 @@ jobs:
           curl -s http://localhost:8080/OTHER/core/other/rootcert/ > zaproxy.cer
           sudo keytool -importcert -file zaproxy.cer -keystore "${JAVA_HOME}/lib/security/cacerts" -alias zaproxy -storepass changeit -noprompt
 
-      - name: Test with Maven
+      - name: Compile with Maven
+        run: |
+          mvn clean compile
+
+      - name: Launch Test with Maven
         run: |
           # Configure Maven to use ZAP as a proxy
           export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
-          mvn clean test
+          mvn test
 
       #TODO: delete this ASAP
       - name: Generate fake traffic to the target API to ensure its working properly
@@ -52,7 +56,7 @@ jobs:
           --insecure
 
       - name: Wait for ZAP Processing - Its necessary to give ZAP time enough to process all de alerts
-        run: sleep 240
+        run: sleep 50
 
       #TODO: Delete this ASAP
       - name: Upload ZAP Log
