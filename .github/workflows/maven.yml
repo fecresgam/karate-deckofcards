@@ -15,12 +15,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      #- name: Create ZAP Logs Directory
-      #  run: mkdir -p ${{ github.workspace }}/zap-logs
-      # TODO: Get ZAP generate valid reports for fake deckofcardsapi, upload it to github and later, uncoment maven tests
-
       - name: Start ZAP Proxy
-        #          docker run -u zap -d --name zap -p 8080:8080 -v ${GITHUB_WORKSPACE}/zap-logs:/zap/zap-logs owasp/zap2docker-stable zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -dir /zap/zap-logs
         run: |
           docker run -u zap -d --name zap -p 8080:8080 owasp/zap2docker-stable zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true
           echo "Waiting for ZAP Proxy to start..."
@@ -46,6 +41,7 @@ jobs:
           export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
           mvn clean test
 
+      #TODO: delete this ASAP
       - name: Generate fake traffic to the target API to ensure its working properly
         run: |
           curl -k --proxy http://localhost:8080 "https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=3" \
@@ -55,9 +51,11 @@ jobs:
           -H "Cookie: sessionid=123456789" \
           --insecure
 
+      #TODO: check if its necessary or not
       - name: Wait for ZAP Processing - Maybe its not necesary
         run: sleep 50
 
+      #TODO: Delete this ASAP
       - name: Upload ZAP Log
         uses: actions/upload-artifact@v2
         with:
@@ -66,8 +64,9 @@ jobs:
 
       - name: Generate ZAP Report
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
-      - name: Show Docker Container Logs
-        run: docker logs zap
+
+      #- name: Show Docker Container Logs
+      #  run: docker logs zap
 
       - name: Upload ZAP Report
         if: always()
