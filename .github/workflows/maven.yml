@@ -76,7 +76,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zap-report
-          path: zap_report.json
+          path: zap_report.html
 
       - name: Upload Karate Test Results
         if: always()
