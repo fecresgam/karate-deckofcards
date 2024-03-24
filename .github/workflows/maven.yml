@@ -68,6 +68,9 @@ jobs:
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
         #run: curl -X GET http://localhost:8080/JSON/alert/view/alertsByRisk/ > zap_report.json
 
+      - name: Show Docker Container Logs
+        run: docker logs zap
+
       - name: Upload ZAP Report
         if: always()
         uses: actions/upload-artifact@v4
