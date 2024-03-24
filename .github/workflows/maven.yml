@@ -17,8 +17,7 @@ jobs:
 
       #- name: Create ZAP Logs Directory
       #  run: mkdir -p ${{ github.workspace }}/zap-logs
-
-      #TODO: Get ZAP generate valid reports for fake deckofcardsapi, upload it to github and later, uncoment maven tests
+      # TODO: Get ZAP generate valid reports for fake deckofcardsapi, upload it to github and later, uncoment maven tests
 
       - name: Start ZAP Proxy
         run: |
