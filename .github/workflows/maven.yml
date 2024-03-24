@@ -52,7 +52,7 @@ jobs:
           --insecure
 
       - name: Wait for ZAP Processing - Its necessary to give ZAP time enough to process all de alerts
-        run: sleep 60
+        run: sleep 240
 
       #TODO: Delete this ASAP
       - name: Upload ZAP Log
