@@ -40,11 +40,11 @@ jobs:
           curl -s http://localhost:8080/OTHER/core/other/rootcert/ > zaproxy.cer
           sudo keytool -importcert -file zaproxy.cer -keystore "${JAVA_HOME}/lib/security/cacerts" -alias zaproxy -storepass changeit -noprompt
 
-#      - name: Test with Maven
-#        run: |
-#          # Configure Maven to use ZAP as a proxy
-#          export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
-#          mvn clean test
+      - name: Test with Maven
+        run: |
+          # Configure Maven to use ZAP as a proxy
+          export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
+          mvn clean test
 
       - name: Generate fake traffic to the target API to ensure its working properly
         run: |
@@ -66,8 +66,7 @@ jobs:
 
       - name: Generate ZAP Report
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
-        #run: curl -X GET http://localhost:8080/JSON/alert/view/alertsByRisk/ > zap_report.json
-
+m
       - name: Show Docker Container Logs
         run: docker logs zap
 
