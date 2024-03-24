@@ -39,7 +39,7 @@ jobs:
 
       - name: Generate fake traffic to the target API to ensure its working properly
         run: |
-          curl --proxy http://localhost:8080 https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=3
+          curl -k --proxy http://localhost:8080 https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=3
 
 
       - name: Generate ZAP Report
