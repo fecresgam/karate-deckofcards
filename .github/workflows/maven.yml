@@ -51,6 +51,9 @@ jobs:
           -H "Cookie: sessionid=123456789" \
           --insecure
 
+      - name: Wait for ZAP Processing - Its necessary to give ZAP time enough to process all de alerts
+        run: sleep 60
+
       #TODO: Delete this ASAP
       - name: Upload ZAP Log
         uses: actions/upload-artifact@v2
