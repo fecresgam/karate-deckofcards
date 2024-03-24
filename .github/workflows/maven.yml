@@ -25,6 +25,7 @@ jobs:
           done
           echo "ZAP Proxy started."
 
+      #TODO: delete ASAP
       - name: Exclude https://repo.maven.apache.org/.* on ZAP
         run: |
           curl http://localhost:8080/JSON/session/action/excludeFromProxy/?regex=https://repo.maven.apache.org/.*
@@ -35,12 +36,9 @@ jobs:
           curl -s http://localhost:8080/OTHER/core/other/rootcert/ > zaproxy.cer
           sudo keytool -importcert -file zaproxy.cer -keystore "${JAVA_HOME}/lib/security/cacerts" -alias zaproxy -storepass changeit -noprompt
 
-      - name: Compile with Maven
+      - name: Compile and Launch Test with Maven
         run: |
           mvn clean compile
-
-      - name: Launch Test with Maven
-        run: |
           # Configure Maven to use ZAP as a proxy
           export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
           mvn test
