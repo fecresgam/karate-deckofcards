@@ -25,6 +25,10 @@ jobs:
           done
           echo "ZAP Proxy started."
 
+      - name: Exclude https://repo.maven.apache.org/.* on ZAP
+        run: |
+          curl http://localhost:8080/JSON/session/action/excludeFromProxy/?regex=https://repo.maven.apache.org/.*
+
       - name: Get ZAP Root CA Certificate and into Java Keystore
         run: |
           # Download ZAP CA Certificate
