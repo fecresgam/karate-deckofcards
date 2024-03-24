@@ -15,13 +15,15 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Create ZAP Logs Directory
-        run: mkdir -p ${{ github.workspace }}/zap-logs
+      #- name: Create ZAP Logs Directory
+      #  run: mkdir -p ${{ github.workspace }}/zap-logs
 
+      #TODO: Get ZAP generate valid reports for fake deckofcardsapi, upload it to github and later, uncoment maven tests
 
       - name: Start ZAP Proxy
         run: |
-          docker run -u zap -d --name zap -p 8080:8080 -v ${GITHUB_WORKSPACE}/zap-logs:/zap/zap-logs owasp/zap2docker-stable zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -dir /zap/zap-logs
+#          docker run -u zap -d --name zap -p 8080:8080 -v ${GITHUB_WORKSPACE}/zap-logs:/zap/zap-logs owasp/zap2docker-stable zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -dir /zap/zap-logs
+          docker run -u zap -d --name zap -p 8080:8080 owasp/zap2docker-stable zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true
           echo "Waiting for ZAP Proxy to start..."
           until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
               printf '.'
@@ -64,8 +66,8 @@ jobs:
           path: zap.log
 
       - name: Generate ZAP Report
-        #run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
-        run: curl -X GET http://localhost:8080/JSON/alert/view/alertsByRisk/ > zap_report.json
+        run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
+        #run: curl -X GET http://localhost:8080/JSON/alert/view/alertsByRisk/ > zap_report.json
 
       - name: Upload ZAP Report
         if: always()
