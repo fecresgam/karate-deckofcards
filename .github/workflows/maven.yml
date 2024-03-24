@@ -50,6 +50,8 @@ jobs:
           -H "Cookie: sessionid=123456789" \
           --insecure
 
+      - name: Wait for ZAP Processing - Maybe its not necesary
+        run: sleep 50
 
       - name: Generate ZAP Report
         #run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
