@@ -38,8 +38,8 @@ jobs:
 
       - name: Compile and Launch Test with Maven
         run: |
-          mvn clean dependency:resolve compile
-          mvn test
+          # Initial mvn execution to get all the maven plugins downloaded before using ZAP
+          mvn clean test -Dkarate.options="--tags @issue113"
           # Configure Maven to use ZAP as a proxy
           export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
           mvn -o test
