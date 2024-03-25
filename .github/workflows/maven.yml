@@ -33,8 +33,7 @@ jobs:
 
       - name: Compile and Launch Test with Maven
         run: |
-          # export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
-          mvn clean test
+          mvn clean test -DargLine="-Dkarate.env=cicd"
 
       - name: Generate ZAP Report
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
