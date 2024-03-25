@@ -39,9 +39,6 @@ jobs:
           export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
           mvn -o test
 
-      - name: Wait for ZAP Processing - Its necessary to give ZAP time enough to process all de alerts
-        run: sleep 50
-
       - name: Generate ZAP Report
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
 
