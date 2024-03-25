@@ -9,7 +9,8 @@ function fn() {
     apiUrl: 'https://deckofcardsapi.com/api/'
   }
 
-  karate.configure('proxy', 'http://localhost:8080');
-  
+  if (env === 'cicd') {
+    karate.configure('proxy', 'http://localhost:8080');
+  }  
   return config;
 }
