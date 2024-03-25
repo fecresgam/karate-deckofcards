@@ -39,16 +39,6 @@ jobs:
           export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
           mvn -o test
 
-      #TODO: delete this ASAP
-      - name: Generate fake traffic to the target API to ensure its working properly
-        run: |
-          curl -k --proxy http://localhost:8080 "https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=3" \
-          -H "User-Agent: Mozilla/5.0 (insecure)" \
-          -H "Referer: http://insecure-website.com" \
-          -H "X-Powered-By: InsecureServer" \
-          -H "Cookie: sessionid=123456789" \
-          --insecure
-
       - name: Wait for ZAP Processing - Its necessary to give ZAP time enough to process all de alerts
         run: sleep 50
 
