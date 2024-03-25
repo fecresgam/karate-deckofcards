@@ -6,9 +6,10 @@ function fn() {
   }
   var config = {
     env: env,
-    apiUrl: 'https://deckofcardsapi.com/api/',
-    proxy: 'http://localhost:8080'
+    apiUrl: 'https://deckofcardsapi.com/api/'
   }
 
+  karate.configure('proxy', 'http://localhost:8080');
+  
   return config;
 }
