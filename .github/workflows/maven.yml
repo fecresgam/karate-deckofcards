@@ -32,8 +32,8 @@ jobs:
           sudo keytool -importcert -file zaproxy.cer -keystore "${JAVA_HOME}/lib/security/cacerts" -alias zaproxy -storepass changeit -noprompt
 
       - name: Compile and Launch Test with Maven
-        run: |
-          mvn clean test -Dkarate.env=cicd
+        # Env set as "cicd" to allow karate ZAP proxy configuration to be used
+        run: mvn clean test -Dkarate.env=cicd
 
       - name: Upload Karate Test Results
         if: always()
