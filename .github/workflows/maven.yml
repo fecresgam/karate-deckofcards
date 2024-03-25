@@ -38,10 +38,10 @@ jobs:
 
       - name: Compile and Launch Test with Maven
         run: |
-          mvn clean compile
+          mvn clean dependency:resolve compile
           # Configure Maven to use ZAP as a proxy
           export MAVEN_OPTS="-Dhttp.proxyHost=localhost -Dhttp.proxyPort=8080 -Dhttps.proxyHost=localhost -Dhttps.proxyPort=8080"
-          mvn test
+          mvn -o test
 
       #TODO: delete this ASAP
       - name: Generate fake traffic to the target API to ensure its working properly
