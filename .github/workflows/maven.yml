@@ -33,7 +33,7 @@ jobs:
 
       - name: Compile and Launch Test with Maven
         run: |
-          mvn clean test -DargLine="-Dkarate.env=cicd"
+          mvn clean test -Dkarate.env=cicd
 
       - name: Generate ZAP Report
         run: curl -s http://localhost:8080/OTHER/core/other/htmlreport/ > zap_report.html
