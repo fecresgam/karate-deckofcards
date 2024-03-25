@@ -7,7 +7,7 @@ function fn() {
   var config = {
     env: env,
     apiUrl: 'https://deckofcardsapi.com/api/',
-    configure proxy = 'http://localhost:8080'
+    proxy: 'http://localhost:8080'
   }
 
   return config;
