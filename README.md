@@ -22,7 +22,7 @@
 Take a look on last runs on [GitHub Actions](https://github.com/fecresgam/karate-deckofcards/actions)
 Inside every run you will find an "Artifacts" section where you can find:
 - The karate results html report.
-- The OWASP ZAP security-related found issues.
+- The OWASP ZAP security-related found issues. 
 
 ## About Deck Of Cards
 [GitHub Repo](https://github.com/crobertsbmw/deckofcards)
