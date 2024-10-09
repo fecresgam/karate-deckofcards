@@ -58,7 +58,7 @@ jobs:
 
       #TODO: Delete this ASAP
       - name: Upload ZAP Log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: zap-log
           path: zap.log
